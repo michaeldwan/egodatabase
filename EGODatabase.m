@@ -278,7 +278,12 @@ valistArray;\
 		EGODatabaseRow* row = [[EGODatabaseRow alloc] initWithDatabaseResult:result];
 		for(x=0;x<columnCount;x++) {
 			if(sqlite3_column_text(statement,x) != NULL) {
-				[row.columnData addObject:[[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement,x)] autorelease]];
+        NSString *value = [[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement,x)] autorelease];
+        if (value != NULL) {
+          [row.columnData addObject:value];
+        } else {
+          [row.columnData addObject:@""];
+        }
 			} else {
 				[row.columnData addObject:@""];
 			}
